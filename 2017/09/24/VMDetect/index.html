@@ -96,18 +96,18 @@
 
 
 
-<meta name="description" content="记录一下各种虚拟机检测的手段前言根据所看的 &amp;lt;&amp;gt; 这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家. 第一招 redpill(红丸)talk is cheap, show me code  123456int swallow_redpill () &amp;#123;   unsigned char m[2+4], rpill[] = &quot;\x0f\">
+<meta name="description" content="记录一下各种虚拟机检测的手段前言根据所看的  这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家. 第一招 redpill(红丸)talk is cheap, show me code  123456int swallow_redpill () &amp;#123;   unsigned char m[2+4], rpill[] = &quot;\x0f\x01\x">
 <meta name="keywords" content="hack,binary">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMDetect">
 <meta property="og:url" content="http://MBTimY.github.io/2017/09/24/VMDetect/index.html">
 <meta property="og:site_name" content="TimY Blog">
-<meta property="og:description" content="记录一下各种虚拟机检测的手段前言根据所看的 &amp;lt;&amp;gt; 这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家. 第一招 redpill(红丸)talk is cheap, show me code  123456int swallow_redpill () &amp;#123;   unsigned char m[2+4], rpill[] = &quot;\x0f\">
+<meta property="og:description" content="记录一下各种虚拟机检测的手段前言根据所看的  这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家. 第一招 redpill(红丸)talk is cheap, show me code  123456int swallow_redpill () &amp;#123;   unsigned char m[2+4], rpill[] = &quot;\x0f\x01\x">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-24T09:02:17.000Z">
+<meta property="og:updated_time" content="2017-09-24T09:06:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VMDetect">
-<meta name="twitter:description" content="记录一下各种虚拟机检测的手段前言根据所看的 &amp;lt;&amp;gt; 这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家. 第一招 redpill(红丸)talk is cheap, show me code  123456int swallow_redpill () &amp;#123;   unsigned char m[2+4], rpill[] = &quot;\x0f\">
+<meta name="twitter:description" content="记录一下各种虚拟机检测的手段前言根据所看的  这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家. 第一招 redpill(红丸)talk is cheap, show me code  123456int swallow_redpill () &amp;#123;   unsigned char m[2+4], rpill[] = &quot;\x0f\x01\x">
 
 
 
@@ -332,7 +332,7 @@
       
 
       
-        <h2 id="记录一下各种虚拟机检测的手段"><a href="#记录一下各种虚拟机检测的手段" class="headerlink" title="记录一下各种虚拟机检测的手段"></a>记录一下各种虚拟机检测的手段</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>根据所看的 &lt;<idapro权威指南\>> 这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家.</idapro权威指南\></p>
+        <h2 id="记录一下各种虚拟机检测的手段"><a href="#记录一下各种虚拟机检测的手段" class="headerlink" title="记录一下各种虚拟机检测的手段"></a>记录一下各种虚拟机检测的手段</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>根据所看的 <idapro权威指南\> 这本书中的一些关于 VM 反检测的连接,这里整合一下现有的一些 VM 反检测手段, 方便自己方便大家.</idapro权威指南\></p>
 <h3 id="第一招-redpill-红丸"><a href="#第一招-redpill-红丸" class="headerlink" title="第一招 redpill(红丸)"></a>第一招 redpill(红丸)</h3><p><em>talk is cheap, show me code</em> </p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">swallow_redpill</span> <span class="params">()</span> </span>&#123;</div><div class="line">   <span class="keyword">unsigned</span> <span class="keyword">char</span> m[<span class="number">2</span>+<span class="number">4</span>], rpill[] = <span class="string">"\x0f\x01\x0d\x00\x00\x00\x00\xc3"</span>;</div><div class="line">   *((<span class="keyword">unsigned</span>*)&amp;rpill[<span class="number">3</span>]) = (<span class="keyword">unsigned</span>)m;</div><div class="line">   ((<span class="keyword">void</span>(*)())&amp;rpill)();</div><div class="line">   <span class="keyword">return</span> (m[<span class="number">5</span>]&gt;<span class="number">0xd0</span>) ? <span class="number">1</span> : <span class="number">0</span>;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
 <p>上面的代码是红丸这个技术的核心的代码, 从最后的返回值上来看主要是检测一下 m 这个变量的值是否大于0xd0, 但从结果上来说如果是大于这个值的情况该函数会判断自身处于VM 的运行环境下.<br>说完现象, 这里我们探究一下原理, 这里为了节省时间就把看雪中<a href="https://bbs.pediy.com/thread-119969.htm" target="_blank" rel="external">虚拟机检测技术剖析</a>文章中的结果直接放在下面:</p>

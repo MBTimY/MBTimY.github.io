@@ -456,6 +456,10 @@
 <p>If you create a suspended process, then set an INT3 at RVA 0, you will erase part of the magic MZ value (‘M’). The magic was checked when the process was created, but it will get checked again by ntdll when the process is resumed (in the hope of reaching the entry-point). In that case, an INVALID_IMAGE_FORMAT exception will be raised.</p>
 <p>If you create your own tracing or debugging tool, you will want to use hardware breakpoint to avoid this problem.</p>
 <footer><strong>@Nicolas Falliere</strong><cite><a href="https://www.symantec.com/connect/articles/windows-anti-debug-reference" target="_blank" rel="external">www.symantec.com/connect/articles/windows-anti-debug-reference</a></cite></footer></blockquote>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://www.symantec.com/connect/articles/windows-anti-debug-reference" target="_blank" rel="external">windows Anti-debug reference</a></li>
+<li><a href="http://www.openrce.org/reference_library/anti_reversing" target="_blank" rel="external">OpenRCE Anti Reverse Engineering Techniques Database</a></li>
+</ul>
 
           
         

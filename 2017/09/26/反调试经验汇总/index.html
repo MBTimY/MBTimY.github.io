@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="TimY Blog">
 <meta property="og:description" content="AntiDebug 经验汇总前言在反汇编, 反调试的工作中经常会遇到很多程序为了保证自身代码不被窥探而做出各式各样的手动来阻止逆向人员.常见的主要从两个方向来阻止自身代码被窥探:反调试和反汇编.这篇文章我主要总结一些反调试的手段,文章中大量的内容主要参考网络中的一些前辈们的思想,此文章主要做一个收集总结的作用,方便查阅. 介绍反调试的方法千奇百怪,不过目的却只有一个,让自己编写的程序不被调试这种东">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-26T21:04:03.000Z">
+<meta property="og:updated_time" content="2017-09-27T09:58:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="反调试经验汇总">
 <meta name="twitter:description" content="AntiDebug 经验汇总前言在反汇编, 反调试的工作中经常会遇到很多程序为了保证自身代码不被窥探而做出各式各样的手动来阻止逆向人员.常见的主要从两个方向来阻止自身代码被窥探:反调试和反汇编.这篇文章我主要总结一些反调试的手段,文章中大量的内容主要参考网络中的一些前辈们的思想,此文章主要做一个收集总结的作用,方便查阅. 介绍反调试的方法千奇百怪,不过目的却只有一个,让自己编写的程序不被调试这种东">
@@ -346,7 +346,7 @@
 <p>This field refers to the second byte in the Process Environment Block of the process. It is set by the system when the process is debugged.<br>This byte can be reset to 0 without consequences for the course of execution of the program (it is an informative flag).</p>
 <p>Example:<br>mov eax, fs:[30h]<br>mov eax, byte [eax+2]<br>test eax, eax<br>jne @DebuggerDetected<br>…</p>
 <p>(3) PEB!NtGlobalFlags</p>
-<p>When a process is created, the system sets some flags that will define how various APIs will behave for this program. Those flags can be read in the PEB, in the DWORD located at offset 0x68 (see the reference).<br>By default, different flags are set depending if the process is created under a debugger or not. If the process is debugged, some flags controlling the heap manipulation routines in ntdll will be set: FLG_HEAP_ENABLE_TAIL_CHECK, FLG_HEAP_ENABLE_FREE_CHECK and FLG_HEAP_VALIDATE_PARAMETERS.<br>This anti-debug can be bypassed by resetting the NtGlobalFlags field.</p>
+<p>When a process is created, the system sets some flags that will define how various APIs will behave for this program. Those flags can be read in the PEB, in the DWORD located at offset 0x68 (see the reference).<br>By default, different flags are set depending if the process is created under a debugger or not. If the process is debugged, some flags controlling the heap manipulation routines in ntdll will be set: FLG_HEAP_ENABLE_TAIL_CHECK &amp; FLG_HEAP_ENABLE_FREE_CHECK &amp; FLG_HEAP_VALIDATE_PARAMETERS.<br>This anti-debug can be bypassed by resetting the NtGlobalFlags field.</p>
 <p>Example:<br>mov eax, fs:[30h]<br>mov eax, [eax+68h]<br>and eax, 0x70<br>test eax, eax<br>jne @DebuggerDetected<br>…</p>
 <p>(4) Heap flags</p>
 <p>As explained previously, NtGlobalFlags informs how the heap routines will behave (among other things). Though it is easy to modify the PEB field, if the heap does not behave the same way as it should when the process is not debugged, this could be problematic. It is a powerful anti-debug, as process heaps are numerous, and their chunks can be individually affected by the FLG<em>HEAP</em>* flags (such as chunk tails). Heap headers would be affected as well. For instance, checking the field ForceFlags in a heap header (offset 0x10) can be used to detect the presence of a debugger.</p>
@@ -456,6 +456,7 @@
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://www.symantec.com/connect/articles/windows-anti-debug-reference" target="_blank" rel="external">windows Anti-debug reference</a></li>
 <li><a href="http://www.openrce.org/reference_library/anti_reversing" target="_blank" rel="external">OpenRCE Anti Reverse Engineering Techniques Database</a></li>
+<li>[windows heap manage] 方便理解 heap 标志检测那里的内容</li>
 </ul>
 
       

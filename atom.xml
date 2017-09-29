@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://MBTimY.github.io/"/>
-  <updated>2017-09-27T10:02:29.000Z</updated>
+  <updated>2017-09-29T19:00:05.000Z</updated>
   <id>http://MBTimY.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vmprotect_vmdetect</title>
+    <link href="http://MBTimY.github.io/2017/09/30/vmprotect-vmdetect/"/>
+    <id>http://MBTimY.github.io/2017/09/30/vmprotect-vmdetect/</id>
+    <published>2017-09-29T17:38:33.000Z</published>
+    <updated>2017-09-29T19:00:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="VMProtect-3-X-虚拟机检测部分的记录"><a href="#VMProtect-3-X-虚拟机检测部分的记录" class="headerlink" title="VMProtect 3.X 虚拟机检测部分的记录"></a>VMProtect 3.X 虚拟机检测部分的记录</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>VMProtect 壳(下面简称为: VMP)进入了3.X 时代, 添加了很多新的 anti-debug vmdetect 等的反逆向人员分析的手段, 这篇文章主要记录VMP 中对于虚拟机检测这块的相关技术.</p><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>虚拟机检测是很多程序为了判断自身是否处于非真实机所用的技术手段,对于 VMP 这样的高强度加密壳, 这项功能可能仅仅只是它锦上添花的一种行为,所以它自身的虚拟机检测手段并没有无所不用其极,检测的方式相对单一,下面我会依照参考的一些资料详细的说明一下 VMP 对于 VMware 这款虚拟机的检测.</p><h3 id="检测技术手段"><a href="#检测技术手段" class="headerlink" title="检测技术手段"></a>检测技术手段</h3><ul><li>VMP3.X 使用了 <code>CPUID</code> 这么一个特权指令来作为检测程序本身是否处于 VMware 中的一个强有力手段, 具体的做法是: 在执行<code>CPUID</code> 这个指令的时候将 EAX 寄存器设置为1这个 int 值, 当执行完前面的指令后, 此命令会将指令结果分别放在 EAX,EBX,ECX,EDX.我们这里只关心 ECX 寄存器中的结果, 此结果保存了一些特性的标志位使用的是寄存器中的位来作为标记的,我们这里只关心第31位(也就是寄存器的最高位)是否为1,这个位置在真是机中是不会被设置为1的,只有在虚拟机中才有可能被设置为1,具体的原理部分可以参考<a href="https://en.wikipedia.org/wiki/CPUID#EAX.3D1:_Processor_Info_and_Feature_Bits" target="_blank" rel="external">Processor_Info_and_Feature_Bits</a>这个 wiki.</li><li>VMP3.X 使用的另一项检测技术是, 检测虚拟机的硬件信息中是否包含有” VMware “这样的字符串来判断的, 在 XP 中采用的是通过 <code>ZwOpenSection</code>和<code>ZwMapViewOfSection</code>这两个函数来获取内存硬件中比较低的地址中存放的一些关于系统中的 bios 的相关信息来判断是否处于虚拟机中. 不过在 WIN7 系统中由于上面的方式不再允许直接打开内存硬件对象,所以换做了<code>LocalAlloc EnumSystemFirmwareTables GetSystemFirmwareTable</code>来实现相同的目的.</li></ul><h3 id="Patch手段"><a href="#Patch手段" class="headerlink" title="Patch手段"></a>Patch手段</h3><p>上面介绍的检测手段中第一种方式,通过修改 Vmware的配置文件可以简单的 Patch 掉. 配置参数如下:</p><blockquote><p>hypervisor.cpuid.v0 = “FALSE”</p><p>hypervisor.cpuid.v1 = “FALSE”</p></blockquote><p>另一项检测手段,暂时没有找到修改配置文件可以解决的方法,目前能想到的只有自己编写一个脚本或者插件来 HOOK 获取系统相关信息的函数来防止这些信息的获取,阻止VMP程序判定.</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.52pojie.cn/forum.php?mod=viewthread&amp;tid=635613" target="_blank" rel="external">VMP v3.0.9过VMware检测</a></p><p><a href="http://www.hexacorn.com/blog/2014/08/25/protecting-vmware-from-cpuid-hypervisor-detection/" target="_blank" rel="external">Protecting VMWare from CPUID hypervisor detection</a></p><p><a href="https://forum.tuts4you.com/topic/38701-vmprotect-ultimate-308/?page=0#comment-185039" target="_blank" rel="external">VMProtect Ultimate 3.0.8</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;VMProtect-3-X-虚拟机检测部分的记录&quot;&gt;&lt;a href=&quot;#VMProtect-3-X-虚拟机检测部分的记录&quot; class=&quot;headerlink&quot; title=&quot;VMProtect 3.X 虚拟机检测部分的记录&quot;&gt;&lt;/a&gt;VMProtect 3.X 
+      
+    
+    </summary>
+    
+    
+      <category term="hack" scheme="http://MBTimY.github.io/tags/hack/"/>
+    
+      <category term="binary" scheme="http://MBTimY.github.io/tags/binary/"/>
+    
+      <category term="package" scheme="http://MBTimY.github.io/tags/package/"/>
+    
+  </entry>
   
   <entry>
     <title>反调试经验汇总</title>

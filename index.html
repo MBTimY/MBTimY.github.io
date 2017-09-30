@@ -344,7 +344,7 @@
 <p>不死心的我觉得这样的方式不够优雅,这样的方式需要利用挂钩系统函数的方式.对于虚拟机检测这样的东西,当然最终极的方法是使得我们的虚拟机变成真机一样才是最优雅的,下面是一些尝试利用修改 VMware来解决,然后宣告失败的惨剧.</p>
 <ol>
 <li>试图通过在.vmx 添加 <code>smbios.reflecthost=&quot;true&quot;</code>这个配置, 希望虚拟机中的 bios 信息跟主机的 bios 信息变成一致的, 后面实验发现好像这并没有用, 至少并不会改变掉那些 VMware 字符串.</li>
-<li>使徒通过修改vmware的固件来修改我们的 bios 信息,具体的做法要先通过VMware 自带的工具<code>vmware-vmx</code> 导出vmware 中会用到的固件, 将固件导出成后缀为rom 的文件,然后通过2进制编辑软件把里面的字符串修改掉,在通过在配置文件中加入<code>bios440.filename = &quot;bios440.rom&quot;</code>这样的配置参数,来调用我们修改过的固件作为系统的 bios, 这里的 bios440.rom 要放在和虚拟机配置文件一样的目录.</li>
+<li>试图通过修改vmware的固件来修改我们的 bios 信息,具体的做法要先通过VMware 自带的工具<code>vmware-vmx</code> 导出vmware 中会用到的固件, 将固件导出成后缀为rom 的文件,然后通过2进制编辑软件把里面的字符串修改掉,在通过在配置文件中加入<code>bios440.filename = &quot;bios440.rom&quot;</code>这样的配置参数,来调用我们修改过的固件作为系统的 bios, 这里的 bios440.rom 要放在和虚拟机配置文件一样的目录.</li>
 </ol>
 <p>上述的方法,第二种方法浪费了我大量的时间查找资料结果还是然并卵.这些方法都无法阻止 VMProtect 对于虚拟机的检测, 所以目前能采用的方法只能通过挂钩函数这一种了, 如果以后能有机会找到更好的方法, 我会更新在这篇文章里面.</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://pete.akeo.ie/2011/06/extracting-and-using-modified-vmware.html" target="_blank" rel="external">http://pete.akeo.ie/2011/06/extracting-and-using-modified-vmware.html</a></p>

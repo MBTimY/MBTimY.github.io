@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="TimY Blog">
 <meta property="og:description" content="前言本篇文章主要记录一下在处理 VMProtect 在WIN7系统中的虚拟机检测中, 走的一些弯路.避免老路重走的悲情… VMProtect 检测手段VMProtect3.X 以后增加的一个虚拟机检测手段比较棘手, 采用的技术是利用如下的 API 获取我们系统环境中的一些硬件相关的信息:12EnumSystemFirmwareTablesGetSystemFirmwareTable 上述的 API">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-30T20:12:44.000Z">
+<meta property="og:updated_time" content="2017-09-30T20:15:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VMProtect 虚拟机检测弯路汇总">
 <meta name="twitter:description" content="前言本篇文章主要记录一下在处理 VMProtect 在WIN7系统中的虚拟机检测中, 走的一些弯路.避免老路重走的悲情… VMProtect 检测手段VMProtect3.X 以后增加的一个虚拟机检测手段比较棘手, 采用的技术是利用如下的 API 获取我们系统环境中的一些硬件相关的信息:12EnumSystemFirmwareTablesGetSystemFirmwareTable 上述的 API">
@@ -344,7 +344,7 @@
 </ol>
 <p>上述的方法,第二种方法浪费了我大量的时间查找资料结果还是然并卵.这些方法都无法阻止 VMProtect 对于虚拟机的检测, 所以目前能采用的方法只能通过挂钩函数这一种了, 如果以后能有机会找到更好的方法, 我会更新在这篇文章里面.</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://pete.akeo.ie/2011/06/extracting-and-using-modified-vmware.html" target="_blank" rel="external">http://pete.akeo.ie/2011/06/extracting-and-using-modified-vmware.html</a></p>
-<p><a href="http://pete.akeo.ie/2011/06/extracting-and-using-modified-vmware.html" target="_blank" rel="external">http://pete.akeo.ie/2011/06/extracting-and-using-modified-vmware.html</a></p>
+<p><a href="http://blog.xuite.net/kai0227/notebook/82868890-%E4%BF%AE%E6%94%B9VMware+BIOS" target="_blank" rel="external">http://blog.xuite.net/kai0227/notebook/82868890-%E4%BF%AE%E6%94%B9VMware+BIOS</a></p>
 
       
     </div>

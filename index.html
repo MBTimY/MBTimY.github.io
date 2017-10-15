@@ -265,6 +265,141 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://MBTimY.github.io/2017/10/15/androidreverseenv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="TimY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TimY Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/15/androidreverseenv/" itemprop="url">Android调试逆向分析环境搭建汇总</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T23:10:49+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>无意之间入坑到Android的一项调试工作中，感觉要分析+动态调试android在搭建环境上比较麻烦，特此在这里记录一些搭建中遇到的问题和流程。</p>
+<h2 id="Android基本环境搭建"><a href="#Android基本环境搭建" class="headerlink" title="Android基本环境搭建"></a>Android基本环境搭建</h2><h3 id="AndroidStudio工具"><a href="#AndroidStudio工具" class="headerlink" title="AndroidStudio工具"></a>AndroidStudio工具</h3><p>从<a href="https://developer.android.com/studio/index.html?hl=zh-cn" target="_blank" rel="external">AndroidStudio安装地址</a>下载AndroidStudio这个Android开发的新宠，现在它已经取代了Eclipse。首先下载它的主要原因，是在调试过程中要使用到<code>adb zipalign jarsigner keytool ...</code>的这些工具，都需要通过下载它来获取。<br>通过它还可以进行针对源码级别的调试，当然这里的源码指的是将.dex文件利用<code>baksmali.jar</code>反编译成出来的smali文件。</p>
+<p>对于上述的smali文件，简单来说可以概述成：Java程序可以运行在各种符合Java规范的虚拟机中；Android中用于运行Java程序（直觉上面来说可以这么理解）的是Dalvik这个由google等厂商合作开发的虚拟机，此虚拟机由于要适应内存和CPU处理有限的场景作出了很多优化。对于处理的Java程序格式也不是采用传统的JVM方式，而是自己专门设计的一套叫做.dex(“Dalvik Executable“)的压缩格式，所以在Android程序打包阶段最重要的一步，是将我们编写的java代码和其他的一些额外信息一起打包成.dex格式以供后面的执行；<br>smali是一种可读格式，通过<code>baksmali.jar</code>工具我们可以将保存在.dex格式中bytecode转换成smali这种可读格式，并保存在以不同的名称为标示的smali文件中以供我们阅读和修改的便利。</p>
+<p>有了上面对于smali文件的理解，应该可以很好的理解为什么我会说这是一种源码级别的调试了，因为.dex保存的字节码通过反编译成smali文件以后拥有良好的阅读性（当然你得先熟悉smali这种格式）。对于具体调试的方法，下面的参考中我会列举一些不错的文章参考。</p>
+<h3 id="Android逆向反编译工具"><a href="#Android逆向反编译工具" class="headerlink" title="Android逆向反编译工具"></a>Android逆向反编译工具</h3><p>此类工具目前在市面上种类繁多，虽然围绕着一个反编译的主题但却百花齐放，针对不同的角度来处理我们的.apk文件。</p>
+<p>这里我提一下<a href="https://ibotpeaches.github.io/Apktool/" target="_blank" rel="external">apktool</a>这款集中了很多功能的工具，简单的处理一个Android应用：解包、反编译、重新打包成.apk格式。这些任务只需要这一款工具就可以很好的实现了，在实际处理中这个工具的使用率非常之高，唯一的缺陷也只是由于这个工具是一个集合了各类工具的集合包，所以针对它所集合的工具比如：将.dex文件反编译成smali文件的<code>baksmali.jar</code>的更新上面可能跟不上这些工具的主版本，所以当在使用apktool的某些功能出现什么错误的时候，需要看一下这些被集成进来的工具是否已经处理了这些既有的错误。<br>更多更全面的工具包下载，我找到了一个不错的网站记录的非常详细：<a href="http://www.androiddevtools.cn/" target="_blank" rel="external">androiddevtools</a></p>
+<p>这里记录几个不错的工具的名称和描述：</p>
+<h4 id="enjarify"><a href="#enjarify" class="headerlink" title="enjarify"></a>enjarify</h4><p><a href="https://github.com/google/enjarify" target="_blank" rel="external">https://github.com/google/enjarify</a>这个工具是谷歌官方开源的用于反编译dex文件的。使用方法和dex2jar差不多，也是简单的命令行操作。这个工具的主页中也提到dex2jar已经是一个比较老的工具，在遇到混淆等等复杂的情况时，可能无法正常工作。所以这里推荐大家使用enjarify这个工具。</p>
+<h4 id="jd-gui"><a href="#jd-gui" class="headerlink" title="jd-gui"></a>jd-gui</h4><p><a href="http://jd.benow.ca/" target="_blank" rel="external">http://jd.benow.ca/</a> 这个工具不用多说，用于查看jar文件中的java代码。</p>
+<h4 id="android-classyshark"><a href="#android-classyshark" class="headerlink" title="android-classyshark"></a>android-classyshark</h4><p><a href="https://github.com/google/android-classyshark/releases" target="_blank" rel="external">https://github.com/google/android-classyshark/releases</a>带有界面，一键反编译Apk工具，直接打开Apk文件，就可以看到Apk中所有的文件结构，甚至还集成了dex文件查看，java代码查看，方法数分析、导入混淆mapping文件等一系列工具。谷歌推出这个工具的目的是为了让我们开发者更清楚的了解自己的Apk中都有什么文件、混淆前后有什么变化，并方便我们进一步优化自己的Apk打包实现。</p>
+<h4 id="AndroidGuard"><a href="#AndroidGuard" class="headerlink" title="AndroidGuard"></a>AndroidGuard</h4><p><a href="https://github.com/androguard/androguard/releases" target="_blank" rel="external">https://github.com/androguard/androguard/releases</a>集成了反编译资源、代码等各种文件的工具包。需要安装Python环境来运行这个工具，这个工具按照不同的反编译需求，分别写成了不同的py功能模块，还有静态分析的功能。所以如果想要用Python开发一个解析Apk文件并进行静态扫描分析的服务，可以引用这个工具来实现。这个工具基本来说属于高级应用里面才会用到，主要通过编写一些自动化工具来处理一些比较复杂的程序来获得我们想要的效果。</p>
+<h4 id="Android-Crack-Tool"><a href="#Android-Crack-Tool" class="headerlink" title="Android-Crack-Tool"></a>Android-Crack-Tool</h4><p><a href="https://github.com/Jermic/Android-Crack-Tool" target="_blank" rel="external">https://github.com/Jermic/Android-Crack-Tool</a>这是网上一位名为Jermic的大神开发的、在Mac环境下使用的App，集成了Android开发中常见的一些编译/反编译工具，方便用户对Apk进行逆向分析，提供Apk信息查看功能。</p>
+<h4 id="ApkParser"><a href="#ApkParser" class="headerlink" title="ApkParser"></a>ApkParser</h4><p><a href="https://github.com/jaredrummler/APKParser" target="_blank" rel="external">https://github.com/jaredrummler/APKParser</a>在电脑上已经有了这么多的工具，在手机上的也有很方便的工具。APKParser是一款在查看手机上已经安装的Apk的信息的工具，他可以查看软件的AndroidManifest.xml文件、方法数、res资源文件，并在手机上直接展示出来。</p>
+<h3 id="IDAPRO逆向神器"><a href="#IDAPRO逆向神器" class="headerlink" title="IDAPRO逆向神器"></a>IDAPRO逆向神器</h3><p>最后提到了逆向神器IDAPRO，在逆向界应该无人不知无人不晓的东西。这个工具在Android的基础环境里面主要起到调试native代码的作用，配合上IDAPRO自带的<code>android_server</code>我们可以非常方便的调试Android调用在so文件中的native代码，对于阅读不友好的arm指令，IDAPRO的F5键绝对可以节约我们大量的时间。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要是总结一些Android调试前期需要搭建的环境和熟悉的工具，搭建好这样的环境是对后面的逆向工作良好的基础可以大大节约出我们的时间。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://unclechen.github.io/2016/09/07/Android%E5%8F%8D%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/" target="_blank" rel="external">Android反编译技术总结</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://MBTimY.github.io/2017/10/01/vmpdetect/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2821,7 +2956,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2834,7 +2969,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

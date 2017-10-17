@@ -265,6 +265,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://MBTimY.github.io/2017/10/17/analysisofrrmj/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="TimY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TimY Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/17/analysisofrrmj/" itemprop="url">analysisofrrmj</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-17T05:34:50+08:00">
+                2017-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作为入坑Android逆向的第一个APP，我觉得需要为了它专门写一篇文章来记录一下整个过程作为纪念。看本篇文章需要有一定的APK打包知识、JAVA知识、IDAPro的使用经验。</p>
+<p>这个APP我主要的目的是获取到此APP中的一个调用外部native代码的函数，函数存放在一个.so文件中。这个函数主要的目的是用做一个特殊连接的认证，只有通过了这套认证机制以后发出去的网络请求才能得到正常的相应结果，其中如何定位到这个.so文件；怎么找到这个函数就是一个native代码；如何通过修改程序的请求信息可以正常获取：都是本篇文章的主要内容。</p>
+<h2 id="确立目标与收集信息"><a href="#确立目标与收集信息" class="headerlink" title="确立目标与收集信息"></a>确立目标与收集信息</h2><p><strong>本次逆向的目标</strong>：找出本次APP中一个功能请求，该功能请求可以获取到远端服务器特殊资源。</p>
+<p>目标的确立是逆向分析的重中之重的一项，明确清晰的目标可以让我们接下来的工作条理清晰不至于迷失在大量的代码中。</p>
+<p><strong>反汇编代码</strong>：为了找出该功能请求部分的代码，我们第一步需要把应用程序的APK文件解包获取到他的smali文件和一些资源文件等，这里所用到的工具是<code>apktool</code>利用下面的命令我们可以将apk文件完整的解包到一个指定的目录中：</p>
+<blockquote>
+<p>java -jar apktool.jar d xxx.apk -o /xxx </p>
+</blockquote>
+<p><strong> 在我们本篇文章中的例子，我解压出来的代码包含了如下的文件和目录：</strong></p>
+<pre><code>-rw-r--r--    1 ooxx  staff    47K 10 14 01:31 AndroidManifest.xml
+-rw-r--r--    1 ooxx  staff    19K 10 14 01:31 apktool.yml
+drwxr-xr-x   28 ooxx  staff   952B 10 14 01:31 assets
+drwxr-xr-x    3 ooxx  staff   102B 10 14 01:33 build
+drwxr-xr-x    5 ooxx  staff   170B 10 14 03:58 lib
+drwxr-xr-x    4 ooxx  staff   136B 10 14 01:31 original
+drwxr-xr-x  142 ooxx  staff   4.7K 10 14 01:31 res
+drwxr-xr-x   17 ooxx  staff   578B 10 14 01:31 smali
+drwxr-xr-x   16 ooxx  staff   544B 10 14 01:31 smali_classes2
+drwxr-xr-x    4 ooxx  staff   136B 10 14 01:31 unknown
+</code></pre><p>基本上所有的APK文件解包出来都包含了上面的这些文件和目录，samli*这样的目录会根据APK文件中.dex文件的多少有所增减,其他的目录相关的解释说明可以在我文章中后贴出的参考中去寻找这里不赘述这些基本概念。</p>
+<p>这些文件中我为了找出与我的目标相关的代码需要关注的主要有<code>smali smali_classes2 lib AndroidManifest.xml</code> 这几个文件和目录，具体的使用此处先按下不表下面会说到的。我们现在通过了工具解包得到了这个包含了大量文件目录，但是直接通过smali格式来查看代码并不是特别的方便，这里我为了阅读代码的良好体验使用了<code>jdax</code>来可视化的得到我们整个APK的整个结构，并且这个工具反编译出来的.dex文件不是smali的形式而是转换成Java代码方便我们阅读。</p>
+<p>上面的步骤中我们得到了APK文件中的smali和Java形式的代码，完整的查看这个APK中的流程和一些常量、函数、资源ID等等都不再是问题。按照我分析程序的习惯是先浏览一下代码的结构，在直觉上面感受了一下这款程序中包含的一些函数和库的名称是否有熟悉的或者是否是引用一些公开的库，并且找到程序主要逻辑部分的代码缩小分析的范围。对于Android程序，要做到这点要更加简单因为我们通过阅读<code>AndroidManifest.xml</code>这个文件获取到主要逻辑的包名，快速的找到存放程序主要逻辑的代码部分。</p>
+<h2 id="定位关键代码"><a href="#定位关键代码" class="headerlink" title="定位关键代码"></a>定位关键代码</h2><p>上一节的信息收集在我本次分析的APP中进行的很顺利，主要是因为该APP没有进行一些强力的加固措施通过工具我们就把它各种数据展示出来了，如果在信息收集的过程中遇见的程序进行一些比较强力的加固措施，那上一节的过程消耗的时间将会根据加密软件的强度呈几何数据的上升。</p>
+<p>接下来根据上一节明确好的目标，可以通过APP在模拟器或者真实机器上面的使用来获得一些额外的信息来帮助我们找到与目标相关的代码，这些信息可以是：界面上面的关键字、触发行为以后的网络封包、一些提示信息等等我们ł以通过直观的观察得到的东西。针对这里的APP我们的目标是找到一个网络请求的功能，我这里利用的是<code>wireshark</code> 来抓取通过模拟器触发我关注的那个功能行为时的封包情况，具体的操作非常的简单：打开<code>wireshark</code> 然后选中Android模拟器模拟的网卡设备，然后在模拟器中点击所需要关注的那个功能按钮后查看<code>wireshark</code> 的封包界面就可以找到相关的数据封包了，在实际的操作中如果封包过多可以使用软件的filter过滤一下封包避免太多无关的数据干扰。透过观察封包发现此处我需要分析的APP采用了SSL作为数据传输的协议导致无法从封包中直接获取到我想要的数据，此时虽然无法得到数据部分的东西了不过通过SSL中第一个客户端发往服务端的ClientHello信息至少可以得到服务端的域名地址。</p>
+<p>得到这个关键的域名地址信息以后，在<code>jdax</code>中使用搜索功能找到有关与这个域名相关的代码部分进行分析找出我们需要关心的那部分代码，这里我找到的是一个用于存放整个程序所用到的链接的一个类，该类会在程序初始化的时候被执行得到一个包含程序几乎所有所能用到链接的对象，这个对象会用在很多与网络请求相关的地方通过分析该对象的引用我们可以缩小查找的范围，由于<code>jdax</code> 没有查找交叉引用的功能我们找到引用的方法还是利用它自带的搜索功能来实现。</p>
+<p>上面的操作把所需要分析的代码的范围进行了非常大的缩减精确定位到了少量的代码来供我们查阅，如果此时面对的不是android程序走到这一部分剩下的工作就是靠经验和自己做一些自动化的工具再在一些细节上面去寻找蛛丝马迹来定位到关键代码了，不过在Android程序中我们有<code>AndroidManifest.xml</code> 这个文件透过它可以大大的加速这整个追寻的过程具体的方法我讲一种简单的：在APP中先切换到我们关注的那部分功能的界面；在这个界面中找一些关键字在<code>jdax</code>中搜索；找到包含这些字符串的activity后去<code>AndroidManifest.xml</code>文件中找到具体的位置；查看一下这些activity的名称、布局之间有没有什么有价值的线索，分析一些直觉上面觉得可疑的函数来锁定位置。</p>
+<p>上面的讲述中有关于<strong>直觉</strong>的那部分基本上来说是取决一个经验的问题，如果要铺开这方面知识来说基本上可以出一两本书了，我这里简单说一下我的理解：对于逆向分析人员来说直觉也是可以量化的一种产物，通常来说在针对一些经常出现的情况我们会将自己的工作经验使用一些自动化编程来简化未来出现同样情况下的工作，有些自动化编程上面难以实现的我们才继续保留使用手动的方式来处理，由于上述的工作经验完全取决分析程序的多寡和对于不同的程序原理的理解上所花费的时间，这里我只能简单说在一经按照上述的简单流程之后缩减了查找范围，最后就是通过自己的逆向经验来找寻最后的那部分关键代码了。</p>
+<h2 id="抓住重点分析关键函数"><a href="#抓住重点分析关键函数" class="headerlink" title="抓住重点分析关键函数"></a>抓住重点分析关键函数</h2><p>来到这一步我已经找到了关注的功能的关键代码的实现部分，这里的工作没有什么很固定话的流程因为基本上来说是考验我们基本功：对于所逆向的程序的代码的理解；对于一些引用的公有库的使用上面的熟悉程度；不断的通过资料来理解那些不懂的逻辑部分等。在本次分析的APP中我最终找到了一个对于一个外部.so文件的一个函数的引用，在Android里面一般称这种调用叫做native代码的调用采用的方法一般是JNI。</p>
+<p>得到了上面的准确的信息，下面的步骤就是如何找出JNI调用的函数来供我们分析。这里用到的知识就是如果用IDAPRO进行native代码的动态调试，具体的相关操作我会在文章最后的参考中给出一些不错的文章来参考。这里简单的说一下结果：通过利用IDAPRO对该程序进行动态调试以后，发现调用的native代码没有被混淆或者加密但是有一个关键函数会对程序的签名进行校验，如果得到程序的校验值与预设的数值不一致的话会使得程序发现自己的程序被重新打包安装了，那么这个函数会把一个传递给服务端的加密字符串改成错误的字符串导致服务端认证客户端失败而不会发送正常的数据给客户端。除了有这层校验意外，由于我此处需要分析它的这个函数的生成全部功能所以我话费了大量的时间查询了ARM指令的一些相关知识，然后得出该程序的整个反编译的代码。</p>
+<p>自此整个目标达成，使得我自己可以写一个模拟程序来模拟整个网络请求包并且得到正常的服务器响应。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.jianshu.com/p/ba9b374346dd" target="_blank" rel="external">Android逆向之smali语法宝典</a></p>
+<p><a href="https://blog.bramp.net/post/2015/08/01/decompile-and-recompile-android-apk/" target="_blank" rel="external">Decompile and Recompile Android APK</a></p>
+<p><a href="http://www.cnblogs.com/bastard/archive/2012/05/19/2508913.html" target="_blank" rel="external">Android中JNI的使用方法</a></p>
+<p><a href="https://dev.qq.com/topic/59190e40e315487c53deec9f" target="_blank" rel="external">手把手教你逆向分析 Android 程序</a></p>
+<p><a href="http://www.cnblogs.com/gordon0918/p/5581597.html" target="_blank" rel="external">android调试系列–使用ida pro调试原生程序</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://MBTimY.github.io/2017/10/15/androidreverseenv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2958,7 +3112,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

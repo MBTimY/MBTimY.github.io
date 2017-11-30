@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://MBTimY.github.io/2017/11/30/ReverseProxyWithNginx/</loc>
+    
+    <lastmod>2017-11-30T19:12:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://MBTimY.github.io/2017/10/17/analysisofrrmj/</loc>
     
     <lastmod>2017-10-19T19:12:32.000Z</lastmod>

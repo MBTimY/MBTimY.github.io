@@ -265,6 +265,1468 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://MBTimY.github.io/2017/09/14/8086assemblerdirective/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="TimY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TimY Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/14/8086assemblerdirective/" itemprop="url">8086汇编指令速查</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T00:21:29+08:00">
+                2017-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="8086汇编指令集的一些简单汇总-方便review"><a href="#8086汇编指令集的一些简单汇总-方便review" class="headerlink" title="8086汇编指令集的一些简单汇总(方便review)"></a>8086汇编指令集的一些简单汇总(方便review)</h2><h3 id="汇总的缘由"><a href="#汇总的缘由" class="headerlink" title="汇总的缘由"></a>汇总的缘由</h3><p>关于 inter 的这套指令集, 在平时的逆向工作中经常用到, 这里我收集一些指令集的网页和指令集的信息, 方便日后的工作.</p>
+<h3 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h3><ul>
+<li><a href="http://x86.renejeschke.de" target="_blank" rel="external">http://x86.renejeschke.de/</a> 这个网站基本上囊括了所有常见的指令的描述,非常方便</li>
+</ul>
+<h3 id="指令速查表"><a href="#指令速查表" class="headerlink" title="指令速查表"></a>指令速查表</h3><p>下面是<a href="http://x86.renejeschke.de" target="_blank" rel="external">http://x86.renejeschke.de/</a>指令表的一个简单的复制, 方便查找</p>
+<table>
+<thead>
+<tr>
+<th>Opcode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AAA</td>
+<td>ASCII Adjust After Addition</td>
+</tr>
+<tr>
+<td>AAD</td>
+<td>ASCII Adjust AX Before Division</td>
+</tr>
+<tr>
+<td>AAS</td>
+<td>ASCII Adjust AL After Subtraction</td>
+</tr>
+<tr>
+<td>ADC</td>
+<td>Add with Carry</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>Add</td>
+</tr>
+<tr>
+<td>ADDPD</td>
+<td>Add Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ADDPS</td>
+<td>Add Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ADDSD</td>
+<td>Add Scalar Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ADDSS</td>
+<td>Add Scalar Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ADDSUBPD</td>
+<td>Packed Double-FP Add/Subtract</td>
+</tr>
+<tr>
+<td>ADDSUBPS</td>
+<td>Packed Single-FP Add/Subtract</td>
+</tr>
+<tr>
+<td>AND</td>
+<td>Logical AND</td>
+</tr>
+<tr>
+<td>ANDPD</td>
+<td>Bitwise Logical AND of Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ANDPS</td>
+<td>Bitwise Logical AND of Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ANDNPD</td>
+<td>Bitwise Logical AND NOT of Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ANDNPS</td>
+<td>Bitwise Logical AND NOT of Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ARPL</td>
+<td>Adjust RPL Field of Segment Selector</td>
+</tr>
+<tr>
+<td>BOUND</td>
+<td>Check Array Index Against Bounds</td>
+</tr>
+<tr>
+<td>BSF</td>
+<td>Bit Scan Forward</td>
+</tr>
+<tr>
+<td>BSR</td>
+<td>Bit Scan Reverse</td>
+</tr>
+<tr>
+<td>BSWAP</td>
+<td>Byte Swap</td>
+</tr>
+<tr>
+<td>BT</td>
+<td>Bit Test</td>
+</tr>
+<tr>
+<td>BTC</td>
+<td>Bit Test and Complement</td>
+</tr>
+<tr>
+<td>BTR</td>
+<td>Bit Test and Reset</td>
+</tr>
+<tr>
+<td>BTS</td>
+<td>Bit Test and Set</td>
+</tr>
+<tr>
+<td>CALL</td>
+<td>Call Procedure</td>
+</tr>
+<tr>
+<td>CBW/CWDE</td>
+<td>Convert Byte to Word/Convert Word to Doubleword</td>
+</tr>
+<tr>
+<td>CLC</td>
+<td>Clear Carry Flag</td>
+</tr>
+<tr>
+<td>CLD</td>
+<td>Clear Direction Flag</td>
+</tr>
+<tr>
+<td>CLFLUSH</td>
+<td>Flush Cache Line</td>
+</tr>
+<tr>
+<td>CLI</td>
+<td>Clear Interrupt Flag</td>
+</tr>
+<tr>
+<td>CLTS</td>
+<td>Clear Task-Switched Flag in CR0</td>
+</tr>
+<tr>
+<td>CMC</td>
+<td>Complement Carry Flag</td>
+</tr>
+<tr>
+<td>CMOVcc</td>
+<td>Conditional Move</td>
+</tr>
+<tr>
+<td>CMP</td>
+<td>Compare Two Operands</td>
+</tr>
+<tr>
+<td>CMPPD</td>
+<td>Compare Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CMPPS</td>
+<td>Compare Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CMPS/CMPSB/CMPSW/CMPSD</td>
+<td>Compare String Operands</td>
+</tr>
+<tr>
+<td>CMPSD</td>
+<td>Compare Scalar Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CMPSS</td>
+<td>Compare Scalar Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CMPXCHG</td>
+<td>Compare and Exchange</td>
+</tr>
+<tr>
+<td>CMPXCHG8B</td>
+<td>Compare and Exchange 8 Bytes</td>
+</tr>
+<tr>
+<td>COMISD</td>
+<td>Compare Scalar Ordered Double-Precision Floating- Point Values and Set EFLAGS</td>
+</tr>
+<tr>
+<td>COMISS</td>
+<td>Compare Scalar Ordered Single-Precision Floating- Point Values and Set EFLAGS</td>
+</tr>
+<tr>
+<td>CPUID</td>
+<td>CPU Identification</td>
+</tr>
+<tr>
+<td>CVTDQ2PD</td>
+<td>Convert Packed Doubleword Integers to Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CVTDQ2PS</td>
+<td>Convert Packed Doubleword Integers to Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CVTPD2DQ</td>
+<td>Convert Packed Double-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTPD2PI</td>
+<td>Convert Packed Double-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTPD2PS</td>
+<td>Convert Packed Double-Precision Floating-Point Values to Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CVTPI2PD</td>
+<td>Convert Packed Doubleword Integers to Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CVTPI2PS</td>
+<td>Convert Packed Doubleword Integers to Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CVTPS2DQ</td>
+<td>Convert Packed Single-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTPS2PD</td>
+<td>Convert Packed Single-Precision Floating-Point Values to Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>CVTPS2PI</td>
+<td>Convert Packed Single-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTSD2SI</td>
+<td>Convert Scalar Double-Precision Floating-Point Value to Doubleword Integer</td>
+</tr>
+<tr>
+<td>CVTSD2SS</td>
+<td>Convert Scalar Double-Precision Floating-Point Value to Scalar Single-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>CVTSI2SD</td>
+<td>Convert Doubleword Integer to Scalar Double- Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>CVTSI2SS</td>
+<td>Convert Doubleword Integer to Scalar Single- Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>CVTSS2SD</td>
+<td>Convert Scalar Single-Precision Floating-Point Value to Scalar Double-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>CVTSS2SI</td>
+<td>Convert Scalar Single-Precision Floating-Point Value to Doubleword Integer</td>
+</tr>
+<tr>
+<td>CVTTPD2PI</td>
+<td>Convert with Truncation Packed Double-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTTPD2DQ</td>
+<td>Convert with Truncation Packed Double-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTTPS2DQ</td>
+<td>Convert with Truncation Packed Single-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTTPS2PI</td>
+<td>Convert with Truncation Packed Single-Precision Floating-Point Values to Packed Doubleword Integers</td>
+</tr>
+<tr>
+<td>CVTTSD2SI</td>
+<td>Convert with Truncation Scalar Double-Precision Floating-Point Value to Signed Doubleword Integer</td>
+</tr>
+<tr>
+<td>CVTTSS2SI</td>
+<td>Convert with Truncation Scalar Single-Precision Floating-Point Value to Doubleword Integer</td>
+</tr>
+<tr>
+<td>CWD/CDQ</td>
+<td>Convert Word to Doubleword/Convert Doubleword to Quadword</td>
+</tr>
+<tr>
+<td>DAA</td>
+<td>Decimal Adjust AL after Addition</td>
+</tr>
+<tr>
+<td>DAS</td>
+<td>Decimal Adjust AL after Subtraction</td>
+</tr>
+<tr>
+<td>DEC</td>
+<td>Decrement by 1</td>
+</tr>
+<tr>
+<td>DIV</td>
+<td>Unsigned Divide</td>
+</tr>
+<tr>
+<td>DIVPD</td>
+<td>Divide Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>DIVPS</td>
+<td>Divide Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>DIVSD</td>
+<td>Divide Scalar Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>DIVSS</td>
+<td>Divide Scalar Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>EMMS</td>
+<td>Empty MMX Technology State</td>
+</tr>
+<tr>
+<td>ENTER</td>
+<td>Make Stack Frame for Procedure Parameters</td>
+</tr>
+<tr>
+<td>F2XM1</td>
+<td>Compute 2x-1</td>
+</tr>
+<tr>
+<td>FABS</td>
+<td>Absolute Value</td>
+</tr>
+<tr>
+<td>FADD/FADDP/FIADD</td>
+<td>Add</td>
+</tr>
+<tr>
+<td>FBLD</td>
+<td>Load Binary Coded Decimal</td>
+</tr>
+<tr>
+<td>FBSTP</td>
+<td>Store BCD Integer and Pop</td>
+</tr>
+<tr>
+<td>FCHS</td>
+<td>Change Sign</td>
+</tr>
+<tr>
+<td>FCLEX/FNCLEX</td>
+<td>Clear Exceptions</td>
+</tr>
+<tr>
+<td>FCMOVcc</td>
+<td>Floating-Point Conditional Move</td>
+</tr>
+<tr>
+<td>FCOM/FCOMP/FCOMPP</td>
+<td>Compare Floating Point Values</td>
+</tr>
+<tr>
+<td>FCOMI/FCOMIP/FUCOMI/FUCOMIP</td>
+<td>Compare Floating Point Values and Set EFLAGS</td>
+</tr>
+<tr>
+<td>FCOS</td>
+<td>Cosine</td>
+</tr>
+<tr>
+<td>FDECSTP</td>
+<td>Decrement Stack-Top Pointer</td>
+</tr>
+<tr>
+<td>FDIV/FDIVP/FIDIV</td>
+<td>Divide</td>
+</tr>
+<tr>
+<td>FDIVR/FDIVRP/FIDIVR</td>
+<td>Reverse Divide</td>
+</tr>
+<tr>
+<td>FFREE</td>
+<td>Free Floating-Point Register</td>
+</tr>
+<tr>
+<td>FICOM/FICOMP</td>
+<td>Compare Integer</td>
+</tr>
+<tr>
+<td>FILD</td>
+<td>Load Integer</td>
+</tr>
+<tr>
+<td>FINCSTP</td>
+<td>Increment Stack-Top Pointer</td>
+</tr>
+<tr>
+<td>FINIT/FNINIT</td>
+<td>Initialize Floating-Point Unit</td>
+</tr>
+<tr>
+<td>FIST/FISTP</td>
+<td>Store Integer</td>
+</tr>
+<tr>
+<td>FISTTP</td>
+<td>Store Integer with Truncation</td>
+</tr>
+<tr>
+<td>FLD</td>
+<td>Load Floating Point Value</td>
+</tr>
+<tr>
+<td>FLD1/FLDL2T/FLDL2E/FLDPI/FLDLG2/FLDLN2/FLDZ</td>
+<td>Load Constant</td>
+</tr>
+<tr>
+<td>FLDCW</td>
+<td>Load x87 FPU Control Word</td>
+</tr>
+<tr>
+<td>FLDENV</td>
+<td>Load x87 FPU Environment</td>
+</tr>
+<tr>
+<td>FMUL/FMULP/FIMUL</td>
+<td>Multiply</td>
+</tr>
+<tr>
+<td>FNOP</td>
+<td>No operation</td>
+</tr>
+<tr>
+<td>FPATAN</td>
+<td>Partial Arctangent</td>
+</tr>
+<tr>
+<td>FPREM</td>
+<td>Partial Remainder</td>
+</tr>
+<tr>
+<td>FPREM1</td>
+<td>Partial Remainder</td>
+</tr>
+<tr>
+<td>FPTAN</td>
+<td>Partial Tangent</td>
+</tr>
+<tr>
+<td>FRNDINT</td>
+<td>Round to Integer</td>
+</tr>
+<tr>
+<td>FRSTOR</td>
+<td>Restore x87 FPU State</td>
+</tr>
+<tr>
+<td>FSAVE/FNSAVE</td>
+<td>Store x87 FPU State</td>
+</tr>
+<tr>
+<td>FSCALE</td>
+<td>Scale</td>
+</tr>
+<tr>
+<td>FSIN</td>
+<td>Sine</td>
+</tr>
+<tr>
+<td>FSINCOS</td>
+<td>Sine and Cosine</td>
+</tr>
+<tr>
+<td>FSQRT</td>
+<td>Square Root</td>
+</tr>
+<tr>
+<td>FST/FSTP</td>
+<td>Store Floating Point Value</td>
+</tr>
+<tr>
+<td>FSTCW/FNSTCW</td>
+<td>Store x87 FPU Control Word</td>
+</tr>
+<tr>
+<td>FSTENV/FNSTENV</td>
+<td>Store x87 FPU Environment</td>
+</tr>
+<tr>
+<td>FSTSW/FNSTSW</td>
+<td>Store x87 FPU Status Word</td>
+</tr>
+<tr>
+<td>FSUB/FSUBP/FISUB</td>
+<td>Subtract</td>
+</tr>
+<tr>
+<td>FSUBR/FSUBRP/FISUBR</td>
+<td>Reverse Subtract</td>
+</tr>
+<tr>
+<td>FTST</td>
+<td>Test Floating Point Value</td>
+</tr>
+<tr>
+<td>FUCOM/FUCOMP/FUCOMPP</td>
+<td>Unordered Compare Floating Point Values</td>
+</tr>
+<tr>
+<td>FXAM</td>
+<td>Examine Floating Point Value</td>
+</tr>
+<tr>
+<td>FXCH</td>
+<td>Exchange Register Contents</td>
+</tr>
+<tr>
+<td>FXRSTOR</td>
+<td>Restore x87 FPU, MMX Technology, SSE, and SSE2 State</td>
+</tr>
+<tr>
+<td>FXSAVE</td>
+<td>Save x87 FPU, MMX Technology, SSE, and SSE2 State</td>
+</tr>
+<tr>
+<td>FXTRACT</td>
+<td>Extract Exponent and Mantissa</td>
+</tr>
+<tr>
+<td>FYL2X</td>
+<td>Compute y * log_2(x)</td>
+</tr>
+<tr>
+<td>FYL2XP1</td>
+<td>Compute y * log_2(x + 1)</td>
+</tr>
+<tr>
+<td>HADDPD</td>
+<td>Packed Double-FP Horizontal Add</td>
+</tr>
+<tr>
+<td>HADDPS</td>
+<td>Packed Single-FP Horizontal Add</td>
+</tr>
+<tr>
+<td>HLT</td>
+<td>Halt</td>
+</tr>
+<tr>
+<td>HSUBPD</td>
+<td>Packed Double-FP Horizontal Subtract</td>
+</tr>
+<tr>
+<td>HSUBPS</td>
+<td>Packed Single-FP Horizontal Subtract</td>
+</tr>
+<tr>
+<td>IDIV</td>
+<td>Signed Divide</td>
+</tr>
+<tr>
+<td>IMUL</td>
+<td>Signed Multiply</td>
+</tr>
+<tr>
+<td>IN</td>
+<td>Input from Port</td>
+</tr>
+<tr>
+<td>INC</td>
+<td>Increment by 1</td>
+</tr>
+<tr>
+<td>INS/INSB/INSW/INSD</td>
+<td>Input from Port to String</td>
+</tr>
+<tr>
+<td>INT n/INTO/INT 3</td>
+<td>Call to Interrupt Procedure</td>
+</tr>
+<tr>
+<td>INVD</td>
+<td>Invalidate Internal Caches</td>
+</tr>
+<tr>
+<td>INVLPG</td>
+<td>Invalidate TLB Entry</td>
+</tr>
+<tr>
+<td>IRET/IRETD</td>
+<td>Interrupt Return</td>
+</tr>
+<tr>
+<td>Jcc</td>
+<td>Jump if Condition Is Met</td>
+</tr>
+<tr>
+<td>JMP</td>
+<td>Jump</td>
+</tr>
+<tr>
+<td>LAHF</td>
+<td>Load Status Flags into AH Register</td>
+</tr>
+<tr>
+<td>LAR</td>
+<td>Load Access Rights Byte</td>
+</tr>
+<tr>
+<td>LDDQU</td>
+<td>Load Unaligned Integer 128 Bits</td>
+</tr>
+<tr>
+<td>LDMXCSR</td>
+<td>Load MXCSR Register</td>
+</tr>
+<tr>
+<td>LDS/LES/LFS/LGS/LSS</td>
+<td>Load Far Pointer</td>
+</tr>
+<tr>
+<td>LEA</td>
+<td>Load Effective Address</td>
+</tr>
+<tr>
+<td>LEAVE</td>
+<td>High Level Procedure Exit</td>
+</tr>
+<tr>
+<td>LFENCE</td>
+<td>Load Fence</td>
+</tr>
+<tr>
+<td>LGDT/LIDT</td>
+<td>Load Global/Interrupt Descriptor Table Register</td>
+</tr>
+<tr>
+<td>LLDT</td>
+<td>Load Local Descriptor Table Register</td>
+</tr>
+<tr>
+<td>LMSW</td>
+<td>Load Machine Status Word</td>
+</tr>
+<tr>
+<td>LOCK</td>
+<td>Assert LOCK# Signal Prefix</td>
+</tr>
+<tr>
+<td>LODS/LODSB/LODSW/LODSD</td>
+<td>Load String</td>
+</tr>
+<tr>
+<td>LOOP/LOOPcc</td>
+<td>Loop According to ECX Counter</td>
+</tr>
+<tr>
+<td>LSL</td>
+<td>Load Segment Limit</td>
+</tr>
+<tr>
+<td>LTR</td>
+<td>Load Task Register</td>
+</tr>
+<tr>
+<td>MASKMOVDQU</td>
+<td>Store Selected Bytes of Double Quadword</td>
+</tr>
+<tr>
+<td>MASKMOVQ</td>
+<td>Store Selected Bytes of Quadword</td>
+</tr>
+<tr>
+<td>MAXPD</td>
+<td>Return Maximum Packed Double-Precision Floating- Point Values</td>
+</tr>
+<tr>
+<td>MAXPS</td>
+<td>Return Maximum Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MAXSD</td>
+<td>Return Maximum Scalar Double-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>MAXSS</td>
+<td>Return Maximum Scalar Single-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>MFENCE</td>
+<td>Memory Fence</td>
+</tr>
+<tr>
+<td>MINPD</td>
+<td>Return Minimum Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MINPS</td>
+<td>Return Minimum Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MINSD</td>
+<td>Return Minimum Scalar Double-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>MINSS</td>
+<td>Return Minimum Scalar Single-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>MONITOR</td>
+<td>Setup Monitor Address</td>
+</tr>
+<tr>
+<td>MOV</td>
+<td>Move</td>
+</tr>
+<tr>
+<td>MOV</td>
+<td>Move to/from Control Registers</td>
+</tr>
+<tr>
+<td>MOV</td>
+<td>Move to/from Debug Registers</td>
+</tr>
+<tr>
+<td>MOVAPD</td>
+<td>Move Aligned Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MOVAPS</td>
+<td>Move Aligned Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MOVD</td>
+<td>Move Doubleword</td>
+</tr>
+<tr>
+<td>MOVDDUP</td>
+<td>Move One Double-FP and Duplicate</td>
+</tr>
+<tr>
+<td>MOVDQA</td>
+<td>Move Aligned Double Quadword</td>
+</tr>
+<tr>
+<td>MOVDQU</td>
+<td>Move Unaligned Double Quadword</td>
+</tr>
+<tr>
+<td>MOVDQ2Q</td>
+<td>Move Quadword from XMM to MMX Technology Register</td>
+</tr>
+<tr>
+<td>MOVHLPS</td>
+<td>Move Packed Single-Precision Floating-Point Values High to Low</td>
+</tr>
+<tr>
+<td>MOVHPD</td>
+<td>Move High Packed Double-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>MOVHPS</td>
+<td>Move High Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MOVLHPS</td>
+<td>Move Packed Single-Precision Floating-Point Values Low to High</td>
+</tr>
+<tr>
+<td>MOVLPD</td>
+<td>Move Low Packed Double-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>MOVLPS</td>
+<td>Move Low Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MOVMSKPD</td>
+<td>Extract Packed Double-Precision Floating-Point Sign Mask</td>
+</tr>
+<tr>
+<td>MOVMSKPS</td>
+<td>Extract Packed Single-Precision Floating-Point Sign Mask</td>
+</tr>
+<tr>
+<td>MOVNTDQ</td>
+<td>Store Double Quadword Using Non-Temporal Hint</td>
+</tr>
+<tr>
+<td>MOVNTI</td>
+<td>Store Doubleword Using Non-Temporal Hint</td>
+</tr>
+<tr>
+<td>MOVNTPD</td>
+<td>Store Packed Double-Precision Floating-Point Values Using Non-Temporal Hint</td>
+</tr>
+<tr>
+<td>MOVNTPS</td>
+<td>Store Packed Single-Precision Floating-Point Values Using Non-Temporal Hint</td>
+</tr>
+<tr>
+<td>MOVNTQ</td>
+<td>Store of Quadword Using Non-Temporal Hint</td>
+</tr>
+<tr>
+<td>MOVSHDUP</td>
+<td>Move Packed Single-FP High and Duplicate</td>
+</tr>
+<tr>
+<td>MOVSLDUP</td>
+<td>Move Packed Single-FP Low and Duplicate</td>
+</tr>
+<tr>
+<td>MOVQ</td>
+<td>Move Quadword</td>
+</tr>
+<tr>
+<td>MOVQ2DQ</td>
+<td>Move Quadword from MMX Technology to XMM Register</td>
+</tr>
+<tr>
+<td>MOVS/MOVSB/MOVSW/MOVSD</td>
+<td>Move Data from String to String</td>
+</tr>
+<tr>
+<td>MOVSD</td>
+<td>Move Scalar Double-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>MOVSS</td>
+<td>Move Scalar Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MOVSX</td>
+<td>Move with Sign-Extension</td>
+</tr>
+<tr>
+<td>MOVUPD</td>
+<td>Move Unaligned Packed Double-Precision Floating- Point Values</td>
+</tr>
+<tr>
+<td>MOVUPS</td>
+<td>Move Unaligned Packed Single-Precision Floating- Point Values</td>
+</tr>
+<tr>
+<td>MOVZX</td>
+<td>Move with Zero-Extend</td>
+</tr>
+<tr>
+<td>MUL</td>
+<td>Unsigned Multiply</td>
+</tr>
+<tr>
+<td>MULPD</td>
+<td>Multiply Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MULPS</td>
+<td>Multiply Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MULSD</td>
+<td>Multiply Scalar Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MULSS</td>
+<td>Multiply Scalar Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>MWAIT</td>
+<td>Monitor Wait</td>
+</tr>
+<tr>
+<td>NEG</td>
+<td>Two’s Complement Negation</td>
+</tr>
+<tr>
+<td>NOP</td>
+<td>No Operation</td>
+</tr>
+<tr>
+<td>NOT</td>
+<td>One’s Complement Negation</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>Logical Inclusive OR</td>
+</tr>
+<tr>
+<td>ORPD</td>
+<td>Bitwise Logical OR of Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>ORPS</td>
+<td>Bitwise Logical OR of Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td>Output to Port</td>
+</tr>
+<tr>
+<td>OUTS/OUTSB/OUTSW/OUTSD</td>
+<td>Output String to Port</td>
+</tr>
+<tr>
+<td>PACKSSWB/PACKSSDW</td>
+<td>Pack with Signed Saturation</td>
+</tr>
+<tr>
+<td>PACKUSWB</td>
+<td>Pack with Unsigned Saturation</td>
+</tr>
+<tr>
+<td>PADDB/PADDW/PADDD</td>
+<td>Add Packed Integers</td>
+</tr>
+<tr>
+<td>PADDQ</td>
+<td>Add Packed Quadword Integers</td>
+</tr>
+<tr>
+<td>PADDSB/PADDSW</td>
+<td>Add Packed Signed Integers with Signed Saturation</td>
+</tr>
+<tr>
+<td>PADDUSB/PADDUSW</td>
+<td>Add Packed Unsigned Integers with Unsigned Saturation</td>
+</tr>
+<tr>
+<td>PAND</td>
+<td>Logical AND</td>
+</tr>
+<tr>
+<td>PANDN</td>
+<td>Logical AND NOT</td>
+</tr>
+<tr>
+<td>PAUSE</td>
+<td>Spin Loop Hint</td>
+</tr>
+<tr>
+<td>PAVGB/PAVGW</td>
+<td>Average Packed Integers</td>
+</tr>
+<tr>
+<td>PCMPEQB/PCMPEQW/PCMPEQD</td>
+<td>Compare Packed Data for Equal</td>
+</tr>
+<tr>
+<td>PCMPGTB/PCMPGTW/PCMPGTD</td>
+<td>Compare Packed Signed Integers for Greater Than</td>
+</tr>
+<tr>
+<td>PEXTRW</td>
+<td>Extract Word</td>
+</tr>
+<tr>
+<td>PINSRW</td>
+<td>Insert Word</td>
+</tr>
+<tr>
+<td>PMADDWD</td>
+<td>Multiply and Add Packed Integers</td>
+</tr>
+<tr>
+<td>PMAXSW</td>
+<td>Maximum of Packed Signed Word Integers</td>
+</tr>
+<tr>
+<td>PMAXUB</td>
+<td>Maximum of Packed Unsigned Byte Integers</td>
+</tr>
+<tr>
+<td>PMINSW</td>
+<td>Minimum of Packed Signed Word Integers</td>
+</tr>
+<tr>
+<td>PMINUB</td>
+<td>Minimum of Packed Unsigned Byte Integers</td>
+</tr>
+<tr>
+<td>PMOVMSKB</td>
+<td>Move Byte Mask</td>
+</tr>
+<tr>
+<td>PMULHUW</td>
+<td>Multiply Packed Unsigned Integers and Store High Result</td>
+</tr>
+<tr>
+<td>PMULHW</td>
+<td>Multiply Packed Signed Integers and Store High Result</td>
+</tr>
+<tr>
+<td>PMULLW</td>
+<td>Multiply Packed Signed Integers and Store Low Result</td>
+</tr>
+<tr>
+<td>PMULUDQ</td>
+<td>Multiply Packed Unsigned Doubleword Integers</td>
+</tr>
+<tr>
+<td>POP</td>
+<td>Pop a Value from the Stack</td>
+</tr>
+<tr>
+<td>POPA/POPAD</td>
+<td>Pop All General-Purpose Registers</td>
+</tr>
+<tr>
+<td>POPF/POPFD</td>
+<td>Pop Stack into EFLAGS Register</td>
+</tr>
+<tr>
+<td>POR</td>
+<td>Bitwise Logical OR</td>
+</tr>
+<tr>
+<td>PREFETCHh</td>
+<td>Prefetch Data Into Caches</td>
+</tr>
+<tr>
+<td>PSADBW</td>
+<td>Compute Sum of Absolute Differences</td>
+</tr>
+<tr>
+<td>PSHUFD</td>
+<td>Shuffle Packed Doublewords</td>
+</tr>
+<tr>
+<td>PSHUFHW</td>
+<td>Shuffle Packed High Words</td>
+</tr>
+<tr>
+<td>PSHUFLW</td>
+<td>Shuffle Packed Low Words</td>
+</tr>
+<tr>
+<td>PSHUFW</td>
+<td>Shuffle Packed Words</td>
+</tr>
+<tr>
+<td>PSLLDQ</td>
+<td>Shift Double Quadword Left Logical</td>
+</tr>
+<tr>
+<td>PSLLW/PSLLD/PSLLQ</td>
+<td>Shift Packed Data Left Logical</td>
+</tr>
+<tr>
+<td>PSRAW/PSRAD</td>
+<td>Shift Packed Data Right Arithmetic</td>
+</tr>
+<tr>
+<td>PSRLDQ</td>
+<td>Shift Double Quadword Right Logical</td>
+</tr>
+<tr>
+<td>PSRLW/PSRLD/PSRLQ</td>
+<td>Shift Packed Data Right Logical</td>
+</tr>
+<tr>
+<td>PSUBB/PSUBW/PSUBD</td>
+<td>Subtract Packed Integers</td>
+</tr>
+<tr>
+<td>PSUBQ</td>
+<td>Subtract Packed Quadword Integers</td>
+</tr>
+<tr>
+<td>PSUBSB/PSUBSW</td>
+<td>Subtract Packed Signed Integers with Signed Saturation</td>
+</tr>
+<tr>
+<td>PSUBUSB/PSUBUSW</td>
+<td>Subtract Packed Unsigned Integers with Unsigned Saturation</td>
+</tr>
+<tr>
+<td>PUNPCKHBW/PUNPCKHWD/PUNPCKHDQ/PUNPCKHQDQ</td>
+<td>Unpack High Data</td>
+</tr>
+<tr>
+<td>PUNPCKLBW/PUNPCKLWD/PUNPCKLDQ/PUNPCKLQDQ</td>
+<td>Unpack Low Data</td>
+</tr>
+<tr>
+<td>PUSH</td>
+<td>Push Word or Doubleword Onto the Stack</td>
+</tr>
+<tr>
+<td>PUSHA/PUSHAD</td>
+<td>Push All General-Purpose Registers</td>
+</tr>
+<tr>
+<td>PUSHF/PUSHFD</td>
+<td>Push EFLAGS Register onto the Stack</td>
+</tr>
+<tr>
+<td>PXOR</td>
+<td>Logical Exclusive OR</td>
+</tr>
+<tr>
+<td>RCL/RCR/ROL/ROR</td>
+<td>Rotate</td>
+</tr>
+<tr>
+<td>RCPPS</td>
+<td>Compute Reciprocals of Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>RCPSS</td>
+<td>Compute Reciprocal of Scalar Single-Precision Floating- Point Values</td>
+</tr>
+<tr>
+<td>RDMSR</td>
+<td>Read from Model Specific Register</td>
+</tr>
+<tr>
+<td>RDPMC</td>
+<td>Read Performance-Monitoring Counters</td>
+</tr>
+<tr>
+<td>RDTSC</td>
+<td>Read Time-Stamp Counter</td>
+</tr>
+<tr>
+<td>REP/REPE/REPZ/REPNE/REPNZ</td>
+<td>Repeat String Operation Prefix</td>
+</tr>
+<tr>
+<td>RET</td>
+<td>Return from Procedure</td>
+</tr>
+<tr>
+<td>RSM</td>
+<td>Resume from System Management Mode</td>
+</tr>
+<tr>
+<td>RSQRTPS</td>
+<td>Compute Reciprocals of Square Roots of Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>RSQRTSS</td>
+<td>Compute Reciprocal of Square Root of Scalar Single- Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>SAHF</td>
+<td>Store AH into Flags</td>
+</tr>
+<tr>
+<td>SAL/SAR/SHL/SHR</td>
+<td>Shift</td>
+</tr>
+<tr>
+<td>SBB</td>
+<td>Integer Subtraction with Borrow</td>
+</tr>
+<tr>
+<td>SCAS/SCASB/SCASW/SCASD</td>
+<td>Scan String</td>
+</tr>
+<tr>
+<td>SETcc</td>
+<td>Set Byte on Condition</td>
+</tr>
+<tr>
+<td>SFENCE</td>
+<td>Store Fence</td>
+</tr>
+<tr>
+<td>SGDT</td>
+<td>Store Global Descriptor Table Register</td>
+</tr>
+<tr>
+<td>SHLD</td>
+<td>Double Precision Shift Left</td>
+</tr>
+<tr>
+<td>SHRD</td>
+<td>Double Precision Shift Right</td>
+</tr>
+<tr>
+<td>SHUFPD</td>
+<td>Shuffle Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SHUFPS</td>
+<td>Shuffle Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SIDT</td>
+<td>Store Interrupt Descriptor Table Register</td>
+</tr>
+<tr>
+<td>SLDT</td>
+<td>Store Local Descriptor Table Register</td>
+</tr>
+<tr>
+<td>SMSW</td>
+<td>Store Machine Status Word</td>
+</tr>
+<tr>
+<td>SQRTPD</td>
+<td>Compute Square Roots of Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SQRTPS</td>
+<td>Compute Square Roots of Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SQRTSD</td>
+<td>Compute Square Root of Scalar Double-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>SQRTSS</td>
+<td>Compute Square Root of Scalar Single-Precision Floating-Point Value</td>
+</tr>
+<tr>
+<td>STC</td>
+<td>Set Carry Flag</td>
+</tr>
+<tr>
+<td>STD</td>
+<td>Set Direction Flag</td>
+</tr>
+<tr>
+<td>STI</td>
+<td>Set Interrupt Flag</td>
+</tr>
+<tr>
+<td>STMXCSR</td>
+<td>Store MXCSR Register State</td>
+</tr>
+<tr>
+<td>STOS/STOSB/STOSW/STOSD</td>
+<td>Store String</td>
+</tr>
+<tr>
+<td>STR</td>
+<td>Store Task Register</td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>Subtract</td>
+</tr>
+<tr>
+<td>SUBPD</td>
+<td>Subtract Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SUBPS</td>
+<td>Subtract Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SUBSD</td>
+<td>Subtract Scalar Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SUBSS</td>
+<td>Subtract Scalar Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>SYSENTER</td>
+<td>Fast System Call</td>
+</tr>
+<tr>
+<td>SYSEXIT</td>
+<td>Fast Return from Fast System Call</td>
+</tr>
+<tr>
+<td>TEST</td>
+<td>Logical Compare</td>
+</tr>
+<tr>
+<td>UCOMISD</td>
+<td>Unordered Compare Scalar Double-Precision Floating- Point Values and Set EFLAGS</td>
+</tr>
+<tr>
+<td>UCOMISS</td>
+<td>Unordered Compare Scalar Single-Precision Floating- Point Values and Set EFLAGS</td>
+</tr>
+<tr>
+<td>UD2</td>
+<td>Undefined Instruction</td>
+</tr>
+<tr>
+<td>UNPCKHPD</td>
+<td>Unpack and Interleave High Packed Double- Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>UNPCKHPS</td>
+<td>Unpack and Interleave High Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>UNPCKLPD</td>
+<td>Unpack and Interleave Low Packed Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>UNPCKLPS</td>
+<td>Unpack and Interleave Low Packed Single-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>VERR/VERW</td>
+<td>Verify a Segment for Reading or Writing</td>
+</tr>
+<tr>
+<td>WAIT/FWAIT</td>
+<td>Wait</td>
+</tr>
+<tr>
+<td>WBINVD</td>
+<td>Write Back and Invalidate Cache</td>
+</tr>
+<tr>
+<td>WRMSR</td>
+<td>Write to Model Specific Register</td>
+</tr>
+<tr>
+<td>XADD</td>
+<td>Exchange and Add</td>
+</tr>
+<tr>
+<td>XCHG</td>
+<td>Exchange Register/Memory with Register</td>
+</tr>
+<tr>
+<td>XLAT/XLATB</td>
+<td>Table Look-up Translation</td>
+</tr>
+<tr>
+<td>XOR</td>
+<td>Logical Exclusive OR</td>
+</tr>
+<tr>
+<td>XORPD</td>
+<td>Bitwise Logical XOR for Double-Precision Floating-Point Values</td>
+</tr>
+<tr>
+<td>XORPS</td>
+<td>Bitwise Logical XOR for Single-Precision Floating-Point Values</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://MBTimY.github.io/2017/09/11/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -430,7 +1892,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -443,7 +1905,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -505,7 +1967,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

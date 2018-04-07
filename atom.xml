@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://MBTimY.github.io/"/>
-  <updated>2017-11-30T19:42:21.000Z</updated>
+  <updated>2018-04-07T16:52:51.000Z</updated>
   <id>http://MBTimY.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MetaspolitModuleLoad</title>
+    <link href="http://MBTimY.github.io/2018/04/07/MetaspolitModuleLoad/"/>
+    <id>http://MBTimY.github.io/2018/04/07/MetaspolitModuleLoad/</id>
+    <published>2018-04-07T13:17:27.000Z</published>
+    <updated>2018-04-07T16:52:51.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="MSF（Metaspolit）中实现模块动态加载的技术细节"><a href="#MSF（Metaspolit）中实现模块动态加载的技术细节" class="headerlink" title="MSF（Metaspolit）中实现模块动态加载的技术细节"></a>MSF（Metaspolit）中实现模块动态加载的技术细节</h1><p>###MSF（Metaspolit）是一款非常出名的漏洞探测检查工具，最近在看里面的源代码了解一下探测工具的结构组成和一些功能，写下此文记录一些自己的理解和笔记。</p><p>###整体结构</p><p>MSF的功能部分主要包含：</p><ul><li>payloads  生成攻击的shellcode，提供各种不同功能的核心shellcode</li><li>exploits  编写的主要的漏洞利用的一些脚本</li><li>post      主要是提供一些发送造数据的程序</li><li>nops      主要提供一些填充空指令的脚本</li><li>auxiliary 主要提供一些辅助功能 如：扫描器</li><li>encoders  主要用来提供加密payload的一些功能</li></ul><p>这里面的功能出除了 encoders 都是从MSF所定义的Module这个Class继承而来的，并且MSF提供给了开发者充分的自由来编辑上面的所有功能的脚本文件，这里引起了我的好奇MSF是怎么将这些脚本文件进行统一管理方便在运行时，可以让各个脚本很好的查找和使用的。</p><p>一般按照我的思路对于这种需要支持以后拓展功能的方案，还是提供一组结构然后再动态的将结构放在统一的一个集合中进行管理，不过MSF似乎跟我的想法有点区别。</p><p>MSF中使用了一种称为MetaPrograming的技术很好的解决了这种动态加载情景，并且可以让动态加载的模块还可以让别的功能脚本任意使用，感觉是一种很不错的解决方案在这种需要动态拓展功能的情景下，下面通过MSF源代码来简单的解析一下这种方法是如何非常的被使用的：</p><p>./metasploit-framework-master/lib/msf/core/modules/loader/base.rb 这个文件是MSF中从各个存放上述功能的脚本文件目录中进行动态加载的功能类，里面load_modulebs函数主要用于将路径目录中存放的.rb文件编写的Class加载到环境中来，供用户操作和使用。这里面主要是通过下面这条函数链对模块进行了加载：</p><p>load_modules -&gt; each_module_reference_name -&gt; load_module</p><p>上述的函数 load_modules 通过参数中传入的目录路径来判定加载哪个目录中的脚本文件进环境中来，each_module_reference_name 这个函数由子类实现，主要是功能是读取目录路径中的文件内容，生成一个比较完整的路径信息还有判定文件的正确性等等的一些功能。当这个函数判定完一个文件时可载入以后，就会调用load_module这个函数来加载文件中的Class到环境中来，此函数通过如下的函数调用链进行了对文件的加载:</p><p>namespace_module_transaction -&gt; try_eval_module -&gt; module_eval_with_lexical_scope</p><p>这里面比较复杂的是namespace_module_transaction这个函数，这个函数中会利用路径信息动态生成一个专属于每个文件的Namespace，这其中使用了MetaPrograming这个我敢接触到技术，具体操作是使用的module_eval将一个由Module构成的Nmaespce载入到Object这个对象中，在ruby中Object这个对象是全局对象main的metaclass所以在这个Object对象中添加的函数和常量可以被全局的使用到。</p><p>具体的代码可以在MSF的源码中查看详细的逻辑，可以更准确的了解到其中的细节。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;MSF（Metaspolit）中实现模块动态加载的技术细节&quot;&gt;&lt;a href=&quot;#MSF（Metaspolit）中实现模块动态加载的技术细节&quot; class=&quot;headerlink&quot; title=&quot;MSF（Metaspolit）中实现模块动态加载的技术细节&quot;&gt;&lt;/a
+      
+    
+    </summary>
+    
+    
+      <category term="Secure" scheme="http://MBTimY.github.io/tags/Secure/"/>
+    
+      <category term="MSF" scheme="http://MBTimY.github.io/tags/MSF/"/>
+    
+      <category term="Ruby" scheme="http://MBTimY.github.io/tags/Ruby/"/>
+    
+  </entry>
   
   <entry>
     <title>使用Nginx在Ubuntu搭建反向代理</title>
